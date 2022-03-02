@@ -4,9 +4,9 @@ import data from './data';
 import { GrStar } from 'react-icons/gr';
 
 function App() {
-  
+
   const productCards = data.map((product, i) => {
-    const index = i;
+    
     return (
       <li className='card' key={i}>
         <div className='image-wrap'>
