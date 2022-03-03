@@ -4,36 +4,38 @@ import data from './data';
 import { GrStar } from 'react-icons/gr';
 
 function App() {
-  // create an array of objects for ratings
+  // create array for ratings
   const [ratings, setRatings] = useState([]);
-  // set array of ratings from the data
+
   useEffect(() => {
     setRatings(data);
-  }, []);
-  // update the ratings array when star button is clicked
-  const updateRatings = (newRating, i) => {
+  }, [])
+
+  // update ratings when star is clicked
+  const updateRatings = (newRating, index) => {
     let newRatings = [...ratings];
-    newRatings[i].rating = newRating;
+    newRatings[index].rating = newRating;
     setRatings(newRatings);
   }
 
-  // create an array for the cart
+  // create array for cart 
   const [cart, setCart] = useState([]);
-  // update cart when add to cart is clicked
-  const updateCart = (product) => {
+
+  // add item to cart when button is clicked
+  const addToCart = (product) => {
     let newCart = [...cart];
     newCart.push(product);
     setCart(newCart);
   }
 
-  const deleteCartItem = (i) => {
+  const deleteFromCart = (i) => {
     let newCart = [...cart];
     newCart.splice(i, 1);
     setCart(newCart);
   }
 
   const productCards = data.map((product, i) => {
-    // save object index to use in star map
+    // save product index to use for star rating
     const objIndex = i;
 
     if (ratings.length > 0) {
@@ -68,22 +70,21 @@ function App() {
           </div>
   
           <div className='btn-wrap'>
-            <button onClick={() => updateCart(product)}>Add to cart</button>
+            <button onClick={() => addToCart(product)}>Add to cart</button>
           </div>
   
           <div className='overlay'></div>
         </li>
       )
     }
-    
   });
-  
+
   const cartItems = cart.map((product, i) => {
     return (
-      <li key={i}>
+      <li className='item' key={i}>
         <h3>{product.name}</h3>
         <p>{product.price}</p>
-        <button onClick={() => deleteCartItem(i)} >Delete</button>
+        <button onClick={() => deleteFromCart(i)}>Delete</button>
       </li>
     )
   })
@@ -94,12 +95,9 @@ function App() {
         {productCards}
       </ul>
 
-      {cart.length > 0 && <div className='cart-wrap'>
-        <h2>Cart</h2>
-        <ul className='cart'>
-          {cartItems}
-        </ul>
-      </div>}
+      {cartItems.length > 0 && <ul className='cart'>
+        {cartItems}
+      </ul>}
     </>
   );
 }
