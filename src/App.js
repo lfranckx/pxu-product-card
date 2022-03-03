@@ -4,30 +4,29 @@ import data from './data';
 import { GrStar } from 'react-icons/gr';
 
 function App() {
-  const [ratings, setRatings] = useState({});
-
+  // create an array of objects for ratings
+  const [ratings, setRatings] = useState([]);
+  // set array of ratings from the data
   useEffect(() => {
-    setRatings(data.map((product, i) => {
-      return { rating: product.rating };
-    }))
-  }, [])
+    setRatings(data);
+  }, []);
 
-  const updateRatings = (i, rating) => {
-    console.log(`index: ${i}`, `rating: ${rating}`);
+  // update the ratings object when star button is clicked
+  const updateRatings = (newRating, i) => {
     let newRatings = [...ratings];
-    newRatings[i] = {rating: rating};
+    newRatings[i].rating = newRating;
     setRatings(newRatings);
   }
 
   const productCards = data.map((product, i) => {
-    // save object index of product to update rating
+    // save object index to use in star map
     const objIndex = i;
 
     if (ratings.length > 0) {
       return (
         <li className='card' key={i}>
           <div className='image-wrap'>
-            <img src='images/tshirt.png' alt='black t-shirt' />
+            <img src={product.img} alt='t-shirt' />
           </div>
   
           <div className='content-wrap'>
@@ -41,12 +40,12 @@ function App() {
                     <input 
                       type="radio" 
                       name='rating' 
-                      value={starRating} 
-                      onClick={() => updateRatings(objIndex, starRating)}
+                      value={starRating}
+                      onClick={() => updateRatings(starRating, objIndex)}
                     />
                     <GrStar 
                       className='star' 
-                      color={starRating <= ratings[objIndex].rating ? "#000" : "#cbcbcb"} 
+                      color={starRating <= ratings[objIndex].rating ? "#000" : "#cbcbcb"}
                     />
                   </label>
                 )
@@ -62,6 +61,7 @@ function App() {
         </li>
       )
     }
+    
   }); 
 
   return (
